@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>A Special Question for You 💕</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #FAF7F2;
+      --card-bg: #FFFFFF;
+      --primary-pink: #D95A78;
+      --primary-hover: #C54462;
+      --accent-pill: #FDF1F4;
+      --text-dark: #322B2C;
+      --text-muted: #8E8284;
+      --border-color: #EFE8E1;
+      --shadow: 0 12px 35px rgba(200, 150, 160, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+      color: var(--text-dark);
+    }
+
+    /* Subtle dotted background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-radial-gradient: #EAE3DA 1.5px, transparent 1.5px;
+      background-size: 24px 24px;
+      opacity: 0.6;
+      z-index: -1;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      position: relative;
+    }
+
+    /* Card Wrapper */
+    .card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      padding: 38px 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      text-align: center;
+      position: relative;
+      display: none;
+      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .card.active {
+      display: block;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.96) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Headings */
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--primary-pink);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    h1 { font-size: 2.1rem; }
+    h2 { font-size: 1.85rem; }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Step Indicator */
+    .steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+      color: var(--primary-pink);
+    }
+
+    .steps span.dot {
+      width: 24px;
+      height: 2px;
+      background-color: #EBDADF;
+      border-radius: 2px;
+    }
+
+    /* Primary Action Buttons */
+    .btn-primary {
+      background-color: var(--primary-pink);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(217, 90, 120, 0.35);
+      transition: transform 0.15s ease, background-color 0.15s ease;
+      width: 100%;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+      background-color: var(--primary-hover);
+    }
+
+    /* Screen 1: Side-by-Side Buttons */
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 28px;
+      position: relative;
+      min-height: 54px;
+    }
+
+    .btn-yes {
+      background-color: var(--primary-pink);
+      color: white;
+      border: none;
+      padding: 13px 32px;
+      border-radius: 999px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(217, 90, 120, 0.35);
+      white-space: nowrap;
+      will-change: transform;
+    }
+
+    .btn-yes:active { transform: scale(0.96); }
+
+    .btn-no {
+      background-color: #F1ECE6;
+      color: #6D6465;
+      border: none;
+      padding: 13px 30px;
+      border-radius: 999px;
+      font-size: 1.05rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: top 0.18s cubic-bezier(0.34, 1.2, 0.64, 1), left 0.18s cubic-bezier(0.34, 1.2, 0.64, 1);
+      z-index: 99;
+    }
+
+    /* Screen 3: Form Elements */
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+    }
+
+    select {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1.5px solid var(--border-color);
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background-color: #FAF8F6;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238E8284' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
+    }
+
+    select:focus {
+      border-color: var(--primary-pink);
+      background-color: #fff;
+    }
+
+    /* Custom Date Picker Trigger Box */
+    .date-trigger-box {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1.5px solid var(--border-color);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      background-color: #FAF8F6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .date-trigger-box.has-value {
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+
+    .date-trigger-box.active {
+      border-color: var(--primary-pink);
+      background-color: #fff;
+      box-shadow: 0 0 0 3px rgba(217, 90, 120, 0.12);
+    }
+
+    /* Custom Calendar Dropdown */
+    .calendar-widget {
+      display: none;
+      margin-top: 10px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-color);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      animation: popIn 0.2s ease-out;
+    }
+
+    .calendar-widget.open {
+      display: block;
+    }
+
+    .cal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 0 4px;
+    }
+
+    .cal-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-dark);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .cal-nav-btn {
+      background: #FAF8F6;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--text-dark);
+      transition: background 0.15s;
+    }
+
+    .cal-nav-btn:hover {
+      background: var(--accent-pill);
+      color: var(--primary-pink);
+    }
+
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .cal-days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-day {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.88rem;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      color: var(--text-dark);
+    }
+
+    .cal-day:hover:not(.disabled):not(.selected) {
+      background-color: var(--accent-pill);
+      color: var(--primary-pink);
+    }
+
+    .cal-day.selected {
+      background-color: var(--primary-pink) !important;
+      color: #fff !important;
+      font-weight: 700;
+      box-shadow: 0 4px 10px rgba(217, 90, 120, 0.35);
+    }
+
+    .cal-day.disabled {
+      color: #D3C9CA;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .cal-day.empty {
+      cursor: default;
+    }
+
+    /* Soft In-Page Alert Banner */
+    .soft-alert {
+      background-color: #FDF1F4;
+      border: 1px solid #F5CCD6;
+      color: #B53654;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      animation: alertSlide 0.25s ease-out;
+    }
+
+    .soft-alert.visible {
+      display: flex;
+    }
+
+    .shake {
+      animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(3px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    @keyframes alertSlide {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Screen 4: Food Selector */
+    .food-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 20px 0 26px;
+    }
+
+    .food-card {
+      background: #FAF8F6;
+      border: 2px solid transparent;
+      border-radius: 18px;
+      padding: 18px 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .food-card .emoji {
+      font-size: 2.2rem;
+    }
+
+    .food-card span {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .food-card.selected {
+      background: #FDF1F4;
+      border-color: var(--primary-pink);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(217, 90, 120, 0.15);
+    }
+
+    /* Screen 5: Summary */
+    .summary-card {
+      background: #FAF8F6;
+      border-radius: 18px;
+      padding: 20px;
+      margin: 20px 0 24px;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+
+    .summary-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .summary-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .summary-icon {
+      font-size: 1.3rem;
+      margin-top: 2px;
+    }
+
+    .summary-content .title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+    }
+
+    .summary-content .value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary-pink);
+      margin-top: 2px;
+    }
+
+    .polaroid-badge {
+      position: absolute;
+      top: -14px;
+      right: 18px;
+      background: #FFFFFF;
+      border: 1px solid #EAE3DA;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      border-radius: 6px;
+      padding: 6px 10px 14px;
+      transform: rotate(8deg);
+      font-size: 1.3rem;
+    }
+
+    .ps-note {
+      font-style: italic;
+      color: #9C9092;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+
+    .illustration {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #2E2A2B;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- ================= SCREEN 1: THE INVITATION ================= -->
+    <div class="card active" id="screen-1">
+      <div class="illustration">💌</div>
+      <h1>Will you go on a date with me?</h1>
+      <p class="subtitle">I promise it'll be worth your time ✨</p>
+      
+      <div class="btn-row" id="btn-container">
+        <button class="btn-yes" id="yes-btn" onclick="nextScreen(2)">Yes 💖</button>
+        <button class="btn-no" id="no-btn">No</button>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 2: THE REACTION ================= -->
+    <div class="card" id="screen-2">
+      <div class="illustration">🎉</div>
+      <h2>no way. NO WAY. 😳</h2>
+      <p class="subtitle">i had a whole speech prepared for if you said no</p>
+      <button class="btn-primary" onclick="nextScreen(3)">okay okay! →</button>
+    </div>
+
+    <!-- ================= SCREEN 3: DATE & TIME ================= -->
+    <div class="card" id="screen-3">
+      <div class="steps">
+        <span>💖</span><span class="dot"></span>
+        <span>💖</span><span class="dot"></span>
+        <span>🤍</span><span class="dot"></span>
+        <span>🤍</span>
+      </div>
+
+      <h2>So... when are you free?</h2>
+      <p class="subtitle">pick a time that works best for you</p>
+
+      <!-- Soft In-Page Alert Banner -->
+      <div class="soft-alert" id="soft-alert">
+        <span>⚠️</span> <span id="soft-alert-msg">Please pick both a day and time first! 💕</span>
+      </div>
+
+      <div id="step3-inputs-container">
+        <!-- Stylized Date Picker -->
+        <div class="form-group">
+          <label>Pick a Day ✨</label>
+          <div class="date-trigger-box" id="date-trigger" onclick="toggleCalendar()">
+            <span id="date-display-text">Select a date...</span>
+            <span>📅</span>
+          </div>
+
+          <!-- Stylized Calendar Dropdown -->
+          <div class="calendar-widget" id="calendar-widget">
+            <div class="cal-header">
+              <button type="button" class="cal-nav-btn" onclick="prevMonth()">‹</button>
+              <div class="cal-title" id="cal-month-year">Month Year</div>
+              <button type="button" class="cal-nav-btn" onclick="nextMonth()">›</button>
+            </div>
+            <div class="cal-weekdays">
+              <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+            </div>
+            <div class="cal-days-grid" id="cal-days-grid"></div>
+          </div>
+        </div>
+
+        <!-- Comprehensive Hourly Time Dropdown -->
+        <div class="form-group">
+          <label for="time-select">What Time? 🙃</label>
+          <select id="time-select" onchange="hideSoftAlert()">
+            <option value="" disabled selected>Select a time...</option>
+            
+            <optgroup label="☕ Morning & Brunch">
+              <option value="9:00 AM">9:00 AM — morning coffee</option>
+              <option value="10:00 AM">10:00 AM — sunny walk & breakfast</option>
+              <option value="11:00 AM">11:00 AM — late morning brunch</option>
+            </optgroup>
+
+            <optgroup label="☀️ Afternoon">
+              <option value="12:00 PM">12:00 PM — lunch date</option>
+              <option value="1:00 PM">1:00 PM — afternoon hangout</option>
+              <option value="2:00 PM">2:00 PM — post-lunch dessert</option>
+              <option value="3:00 PM">3:00 PM — coffee run & treats</option>
+              <option value="4:00 PM">4:00 PM — golden hour stroll</option>
+              <option value="5:00 PM">5:00 PM — early sunset vibe</option>
+            </optgroup>
+
+            <optgroup label="🌙 Evening & Dinner">
+              <option value="6:00 PM">6:00 PM — early dinner vibes</option>
+              <option value="6:30 PM">6:30 PM — right on time</option>
+              <option value="7:00 PM">7:00 PM — making me hungry already</option>
+              <option value="7:30 PM">7:30 PM — peak dinner hour</option>
+              <option value="8:00 PM">8:00 PM — evening hangout</option>
+              <option value="8:30 PM">8:30 PM — drinks & bites</option>
+            </optgroup>
+
+            <optgroup label="✨ Late Night">
+              <option value="9:00 PM">9:00 PM — late night dessert run</option>
+              <option value="9:30 PM">9:30 PM — night drive vibe</option>
+              <option value="10:00 PM">10:00 PM — late night adventure</option>
+              <option value="11:00 PM">11:00 PM — night owls only</option>
+            </optgroup>
+
+            <optgroup label="🎁 Other">
+              <option value="Surprise me">Surprise me!</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="validateStep3()">okay next →</button>
+    </div>
+
+    <!-- ================= SCREEN 4: FOOD PREFERENCES ================= -->
+    <div class="card" id="screen-4">
+      <div class="steps">
+        <span>💖</span><span class="dot"></span>
+        <span>💖</span><span class="dot"></span>
+        <span>💖</span><span class="dot"></span>
+        <span>🤍</span>
+      </div>
+
+      <h2>What are we feeling? 🍽️✨</h2>
+      <p class="subtitle">(you can pick more than one btw)</p>
+
+      <div class="food-grid">
+        <div class="food-card" onclick="toggleFood(this, 'Pizza')">
+          <span class="emoji">🍕</span>
+          <span>Pizza</span>
+        </div>
+        <div class="food-card" onclick="toggleFood(this, 'Sushi')">
+          <span class="emoji">🍣</span>
+          <span>Sushi</span>
+        </div>
+        <div class="food-card" onclick="toggleFood(this, 'Burgers')">
+          <span class="emoji">🍔</span>
+          <span>Burgers</span>
+        </div>
+        <div class="food-card" onclick="toggleFood(this, 'Pasta')">
+          <span class="emoji">🍝</span>
+          <span>Pasta</span>
+        </div>
+        <div class="food-card" onclick="toggleFood(this, 'Tacos')">
+          <span class="emoji">🌮</span>
+          <span>Tacos</span>
+        </div>
+        <div class="food-card" onclick="toggleFood(this, 'Ramen')">
+          <span class="emoji">🍜</span>
+          <span>Ramen</span>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="finishDatePlan()">this one! →</button>
+    </div>
+
+    <!-- ================= SCREEN 5: FINAL SUMMARY ================= -->
+    <div class="card" id="screen-5">
+      <div class="polaroid-badge">💖</div>
+      <h2>It's a date! 💌</h2>
+      <p class="subtitle" id="pickup-line">glad you didn't say no. be ready, i'm coming to get you 🚗</p>
+      <p class="ps-note">p.s. normal people text. i made a website during lunch. for you. no big deal.</p>
+
+      <div class="summary-card">
+        <div class="summary-item">
+          <div class="summary-icon">📅</div>
+          <div class="summary-content">
+            <div class="title">WHEN</div>
+            <div class="value" id="summary-date-time">Friday, June 5th at 7:00 PM</div>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-icon">🍽️</div>
+          <div class="summary-content">
+            <div class="title">FOOD</div>
+            <div class="value" id="summary-food">Pizza, Sushi</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="copyPlan()">📋 Copy plan & text me</button>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast">Plan copied to clipboard! Text it to him 💕</div>
+
+  <script>
+    // State Store
+    const state = {
+      date: null,
+      time: '',
+      foods: []
+    };
+
+    // ================= CUSTOM STYLED CALENDAR LOGIC =================
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let currentCalMonth = today.getMonth();
+    let currentCalYear = today.getFullYear();
+    let selectedCalDate = null;
+
+    const months = [
+      "January", "February", "March", "April", "May", "June", 
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    function toggleCalendar() {
+      const widget = document.getElementById('calendar-widget');
+      const trigger = document.getElementById('date-trigger');
+      widget.classList.toggle('open');
+      trigger.classList.toggle('active');
+      if (widget.classList.contains('open')) {
+        renderCalendar(currentCalMonth, currentCalYear);
+      }
+    }
+
+    function renderCalendar(month, year) {
+      const monthYearText = document.getElementById('cal-month-year');
+      const daysGrid = document.getElementById('cal-days-grid');
+      monthYearText.innerText = `${months[month]} ${year}`;
+      daysGrid.innerHTML = '';
+
+      const firstDayIndex = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      // Empty spaces for padding previous month
+      for (let i = 0; i < firstDayIndex; i++) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.classList.add('cal-day', 'empty');
+        daysGrid.appendChild(emptyDiv);
+      }
+
+      // Populate days
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dayEl = document.createElement('div');
+        dayEl.classList.add('cal-day');
+        dayEl.innerText = d;
+
+        const checkDate = new Date(year, month, d);
+        checkDate.setHours(0, 0, 0, 0);
+
+        // Disable past dates
+        if (checkDate < today) {
+          dayEl.classList.add('disabled');
+        } else {
+          if (selectedCalDate && checkDate.getTime() === selectedCalDate.getTime()) {
+            dayEl.classList.add('selected');
+          }
+          dayEl.onclick = () => selectDate(checkDate);
+        }
+
+        daysGrid.appendChild(dayEl);
+      }
+    }
+
+    function prevMonth() {
+      if (currentCalMonth === 0) {
+        currentCalMonth = 11;
+        currentCalYear--;
+      } else {
+        currentCalMonth--;
+      }
+      renderCalendar(currentCalMonth, currentCalYear);
+    }
+
+    function nextMonth() {
+      if (currentCalMonth === 11) {
+        currentCalMonth = 0;
+        currentCalYear++;
+      } else {
+        currentCalMonth++;
+      }
+      renderCalendar(currentCalMonth, currentCalYear);
+    }
+
+    function selectDate(dateObj) {
+      selectedCalDate = dateObj;
+      state.date = dateObj;
+
+      const options = { weekday: 'short', month: 'short', day: 'numeric' };
+      const formatted = dateObj.toLocaleDateString('en-US', options);
+
+      const trigger = document.getElementById('date-trigger');
+      const text = document.getElementById('date-display-text');
+      text.innerText = formatted;
+      trigger.classList.add('has-value');
+
+      document.getElementById('calendar-widget').classList.remove('open');
+      trigger.classList.remove('active');
+      hideSoftAlert();
+    }
+
+    // ================= SOFT ALERT NOTIFICATION =================
+    function showSoftAlert(message) {
+      const alertBox = document.getElementById('soft-alert');
+      const alertMsg = document.getElementById('soft-alert-msg');
+      const inputsContainer = document.getElementById('step3-inputs-container');
+
+      alertMsg.innerText = message;
+      alertBox.classList.add('visible');
+
+      inputsContainer.classList.remove('shake');
+      void inputsContainer.offsetWidth; // Trigger reflow
+      inputsContainer.classList.add('shake');
+    }
+
+    function hideSoftAlert() {
+      const alertBox = document.getElementById('soft-alert');
+      alertBox.classList.remove('visible');
+    }
+
+    // ================= RUNAWAY "NO" & SLIDING "YES" LOGIC =================
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+    let hasEscapedOnce = false;
+
+    function escapeNoBtn() {
+      if (!hasEscapedOnce) {
+        // FLIP technique: calculate starting position of Yes button
+        const firstRect = yesBtn.getBoundingClientRect();
+
+        // Turn No button into fixed position
+        noBtn.style.position = 'fixed';
+        hasEscapedOnce = true;
+
+        // Calculate ending position of Yes button after No leaves flow
+        const lastRect = yesBtn.getBoundingClientRect();
+        const deltaX = firstRect.left - lastRect.left;
+
+        // Invert & Play smooth sliding transition to center
+        yesBtn.style.transition = 'none';
+        yesBtn.style.transform = `translateX(${deltaX}px)`;
+
+        requestAnimationFrame(() => {
+          yesBtn.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.45, 0.64, 1)';
+          yesBtn.style.transform = 'translateX(0)';
+        });
+      }
+
+      const padding = 25;
+      const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+      const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.top = `${randomY}px`;
+    }
+
+    noBtn.addEventListener('mouseenter', escapeNoBtn);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      escapeNoBtn();
+    });
+
+    // ================= SCREEN NAVIGATION =================
+    function nextScreen(screenNumber) {
+      document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+      const nextCard = document.getElementById(`screen-${screenNumber}`);
+      if (nextCard) nextCard.classList.add('active');
+    }
+
+    // Step 3 Soft Validation
+    function validateStep3() {
+      const selectedTime = document.getElementById('time-select').value;
+
+      if (!state.date && !selectedTime) {
+        showSoftAlert('Please pick both a date and a time! 💕');
+        return;
+      }
+      if (!state.date) {
+        showSoftAlert('Please pick a date for our date! ✨');
+        return;
+      }
+      if (!selectedTime) {
+        showSoftAlert('Please select what time works for you! 🙃');
+        return;
+      }
+
+      state.time = selectedTime;
+      hideSoftAlert();
+      nextScreen(4);
+    }
+
+    // ================= FOOD SELECTION =================
+    function toggleFood(element, foodName) {
+      element.classList.toggle('selected');
+      if (state.foods.includes(foodName)) {
+        state.foods = state.foods.filter(item => item !== foodName);
+      } else {
+        state.foods.push(foodName);
+      }
+    }
+
+    // ================= FORMAT & FINISH =================
+    function finishDatePlan() {
+      if (state.foods.length === 0) {
+        state.foods.push('Whatever you want');
+      }
+
+      const options = { weekday: 'long', month: 'long', day: 'numeric' };
+      const formattedDate = state.date.toLocaleDateString('en-US', options);
+
+      // Populate Screen 5 Elements
+      document.getElementById('summary-date-time').innerText = `${formattedDate} at ${state.time}`;
+      document.getElementById('summary-food').innerText = state.foods.join(', ');
+      document.getElementById('pickup-line').innerText = `glad you didn't say no. be ready by ${state.time}, i'm coming to get you 🚗`;
+
+      nextScreen(5);
+    }
+
+    // ================= CLIPBOARD COPY ACTION =================
+    function copyPlan() {
+      const planText = `It's a date! 💌\n🗓️ When: ${document.getElementById('summary-date-time').innerText}\n🍽️ Food: ${state.foods.join(', ')}\nReady when you are! 🚗✨`;
+
+      navigator.clipboard.writeText(planText).then(() => {
+        showToast();
+      }).catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = planText;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast();
+      });
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+  </script>
+</body>
+</html>
