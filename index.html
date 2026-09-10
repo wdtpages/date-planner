@@ -39,7 +39,6 @@
       color: var(--text-dark);
     }
 
-    /* Subtle dotted background */
     body::before {
       content: "";
       position: fixed;
@@ -56,7 +55,6 @@
       position: relative;
     }
 
-    /* Card Wrapper */
     .card {
       background: var(--card-bg);
       border-radius: 28px;
@@ -78,7 +76,6 @@
       to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
-    /* Headings */
     h1, h2 {
       font-family: 'Playfair Display', serif;
       color: var(--primary-pink);
@@ -97,7 +94,6 @@
       line-height: 1.5;
     }
 
-    /* Step Indicator */
     .steps {
       display: flex;
       justify-content: center;
@@ -115,7 +111,6 @@
       border-radius: 2px;
     }
 
-    /* Primary Action Buttons */
     .btn-primary {
       background-color: var(--primary-pink);
       color: white;
@@ -139,7 +134,6 @@
       background-color: var(--primary-hover);
     }
 
-    /* Screen 1: Side-by-Side Buttons */
     .btn-row {
       display: flex;
       justify-content: center;
@@ -180,7 +174,6 @@
       z-index: 99;
     }
 
-    /* Screen 3: Form Elements */
     .form-group {
       text-align: left;
       margin-bottom: 20px;
@@ -218,7 +211,6 @@
       background-color: #fff;
     }
 
-    /* Custom Date Picker Trigger Box */
     .date-trigger-box {
       width: 100%;
       padding: 14px 16px;
@@ -246,7 +238,6 @@
       box-shadow: 0 0 0 3px rgba(217, 90, 120, 0.12);
     }
 
-    /* Custom Calendar Dropdown */
     .calendar-widget {
       display: none;
       margin-top: 10px;
@@ -348,7 +339,6 @@
       cursor: default;
     }
 
-    /* Soft In-Page Alert Banner */
     .soft-alert {
       background-color: #FDF1F4;
       border: 1px solid #F5CCD6;
@@ -385,7 +375,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Screen 4: Food Selector */
     .food-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -423,7 +412,6 @@
       box-shadow: 0 4px 12px rgba(217, 90, 120, 0.15);
     }
 
-    /* Screen 5: Summary */
     .summary-card {
       background: #FAF8F6;
       border-radius: 18px;
@@ -556,13 +544,11 @@
       <h2>So... when are you free?</h2>
       <p class="subtitle">pick a time that works best for you</p>
 
-      <!-- Soft In-Page Alert Banner -->
       <div class="soft-alert" id="soft-alert">
         <span>⚠️</span> <span id="soft-alert-msg">Please pick both a day and time first! 💕</span>
       </div>
 
       <div id="step3-inputs-container">
-        <!-- Stylized Date Picker -->
         <div class="form-group">
           <label>Pick a Day ✨</label>
           <div class="date-trigger-box" id="date-trigger" onclick="toggleCalendar()">
@@ -570,7 +556,6 @@
             <span>📅</span>
           </div>
 
-          <!-- Stylized Calendar Dropdown -->
           <div class="calendar-widget" id="calendar-widget">
             <div class="cal-header">
               <button type="button" class="cal-nav-btn" onclick="prevMonth()">‹</button>
@@ -584,7 +569,6 @@
           </div>
         </div>
 
-        <!-- Comprehensive Hourly Time Dropdown -->
         <div class="form-group">
           <label for="time-select">What Time? 🙃</label>
           <select id="time-select" onchange="hideSoftAlert()">
@@ -705,7 +689,6 @@
   <div class="toast" id="toast">Plan copied to clipboard! Text it to him 💕</div>
 
   <script>
-    // State Store
     const state = {
       date: null,
       time: '',
@@ -744,14 +727,12 @@
       const firstDayIndex = new Date(year, month, 1).getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-      // Empty spaces for padding previous month
       for (let i = 0; i < firstDayIndex; i++) {
         const emptyDiv = document.createElement('div');
         emptyDiv.classList.add('cal-day', 'empty');
         daysGrid.appendChild(emptyDiv);
       }
 
-      // Populate days
       for (let d = 1; d <= daysInMonth; d++) {
         const dayEl = document.createElement('div');
         dayEl.classList.add('cal-day');
@@ -760,7 +741,6 @@
         const checkDate = new Date(year, month, d);
         checkDate.setHours(0, 0, 0, 0);
 
-        // Disable past dates
         if (checkDate < today) {
           dayEl.classList.add('disabled');
         } else {
@@ -821,7 +801,7 @@
       alertBox.classList.add('visible');
 
       inputsContainer.classList.remove('shake');
-      void inputsContainer.offsetWidth; // Trigger reflow
+      void inputsContainer.offsetWidth;
       inputsContainer.classList.add('shake');
     }
 
@@ -837,18 +817,13 @@
 
     function escapeNoBtn() {
       if (!hasEscapedOnce) {
-        // FLIP technique: calculate starting position of Yes button
         const firstRect = yesBtn.getBoundingClientRect();
-
-        // Turn No button into fixed position
         noBtn.style.position = 'fixed';
         hasEscapedOnce = true;
 
-        // Calculate ending position of Yes button after No leaves flow
         const lastRect = yesBtn.getBoundingClientRect();
         const deltaX = firstRect.left - lastRect.left;
 
-        // Invert & Play smooth sliding transition to center
         yesBtn.style.transition = 'none';
         yesBtn.style.transform = `translateX(${deltaX}px)`;
 
@@ -882,7 +857,6 @@
       if (nextCard) nextCard.classList.add('active');
     }
 
-    // Step 3 Soft Validation
     function validateStep3() {
       const selectedTime = document.getElementById('time-select').value;
 
@@ -904,7 +878,6 @@
       nextScreen(4);
     }
 
-    // ================= FOOD SELECTION =================
     function toggleFood(element, foodName) {
       element.classList.toggle('selected');
       if (state.foods.includes(foodName)) {
@@ -923,10 +896,21 @@
       const options = { weekday: 'long', month: 'long', day: 'numeric' };
       const formattedDate = state.date.toLocaleDateString('en-US', options);
 
+      // Handle specific time vs "Surprise me" naturally
+      const isSurprise = state.time === 'Surprise me';
+      
+      const whenText = isSurprise 
+        ? `${formattedDate} (Surprise time ✨)` 
+        : `${formattedDate} at ${state.time}`;
+
+      const pickupText = isSurprise 
+        ? `glad you didn't say no. be ready whenever, the time is a surprise 🚗✨` 
+        : `glad you didn't say no. be ready by ${state.time}, i'm coming to get you 🚗`;
+
       // Populate Screen 5 Elements
-      document.getElementById('summary-date-time').innerText = `${formattedDate} at ${state.time}`;
+      document.getElementById('summary-date-time').innerText = whenText;
       document.getElementById('summary-food').innerText = state.foods.join(', ');
-      document.getElementById('pickup-line').innerText = `glad you didn't say no. be ready by ${state.time}, i'm coming to get you 🚗`;
+      document.getElementById('pickup-line').innerText = pickupText;
 
       nextScreen(5);
     }
