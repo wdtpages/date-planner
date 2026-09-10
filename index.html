@@ -188,30 +188,8 @@
       color: var(--text-dark);
     }
 
-    select {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1.5px solid var(--border-color);
-      font-size: 0.95rem;
-      color: var(--text-dark);
-      background-color: #FAF8F6;
-      outline: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238E8284' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      background-size: 16px;
-    }
-
-    select:focus {
-      border-color: var(--primary-pink);
-      background-color: #fff;
-    }
-
-    .date-trigger-box {
+    /* Custom Inputs & Dropdown Triggers */
+    .custom-trigger-box {
       width: 100%;
       padding: 14px 16px;
       border-radius: 14px;
@@ -227,17 +205,18 @@
       user-select: none;
     }
 
-    .date-trigger-box.has-value {
+    .custom-trigger-box.has-value {
       color: var(--text-dark);
       font-weight: 600;
     }
 
-    .date-trigger-box.active {
+    .custom-trigger-box.active {
       border-color: var(--primary-pink);
       background-color: #fff;
       box-shadow: 0 0 0 3px rgba(217, 90, 120, 0.12);
     }
 
+    /* Custom Calendar Widget */
     .calendar-widget {
       display: none;
       margin-top: 10px;
@@ -339,6 +318,67 @@
       cursor: default;
     }
 
+    /* Custom Mobile-Friendly Time Widget */
+    .time-widget {
+      display: none;
+      margin-top: 10px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-color);
+      border-radius: 18px;
+      padding: 10px 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      max-height: 240px;
+      overflow-y: auto;
+      animation: popIn 0.2s ease-out;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .time-widget.open {
+      display: block;
+    }
+
+    .time-widget::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .time-widget::-webkit-scrollbar-thumb {
+      background-color: #EBDADF;
+      border-radius: 4px;
+    }
+
+    .time-category {
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--primary-pink);
+      padding: 10px 12px 4px;
+    }
+
+    .time-option {
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .time-option:hover {
+      background-color: var(--accent-pill);
+      color: var(--primary-pink);
+    }
+
+    .time-option.selected {
+      background-color: var(--accent-pill);
+      color: var(--primary-pink);
+      font-weight: 700;
+    }
+
+    /* Soft Alert Notification */
     .soft-alert {
       background-color: #FDF1F4;
       border: 1px solid #F5CCD6;
@@ -512,7 +552,7 @@
 
   <div class="container">
 
-    <!-- ================= SCREEN 1: THE INVITATION ================= -->
+    <!-- SCREEN 1 -->
     <div class="card active" id="screen-1">
       <div class="illustration">💌</div>
       <h1>Will you go on a date with me?</h1>
@@ -524,7 +564,7 @@
       </div>
     </div>
 
-    <!-- ================= SCREEN 2: THE REACTION ================= -->
+    <!-- SCREEN 2 -->
     <div class="card" id="screen-2">
       <div class="illustration">🎉</div>
       <h2>no way. NO WAY. 😳</h2>
@@ -532,7 +572,7 @@
       <button class="btn-primary" onclick="nextScreen(3)">okay okay! →</button>
     </div>
 
-    <!-- ================= SCREEN 3: DATE & TIME ================= -->
+    <!-- SCREEN 3 -->
     <div class="card" id="screen-3">
       <div class="steps">
         <span>💖</span><span class="dot"></span>
@@ -549,9 +589,10 @@
       </div>
 
       <div id="step3-inputs-container">
+        <!-- Stylized Date Trigger & Calendar -->
         <div class="form-group">
           <label>Pick a Day ✨</label>
-          <div class="date-trigger-box" id="date-trigger" onclick="toggleCalendar()">
+          <div class="custom-trigger-box" id="date-trigger" onclick="toggleCalendar()">
             <span id="date-display-text">Select a date...</span>
             <span>📅</span>
           </div>
@@ -569,53 +610,52 @@
           </div>
         </div>
 
+        <!-- Custom Stylized Time Trigger & Menu -->
         <div class="form-group">
-          <label for="time-select">What Time? 🙃</label>
-          <select id="time-select" onchange="hideSoftAlert()">
-            <option value="" disabled selected>Select a time...</option>
-            
-            <optgroup label="☕ Morning & Brunch">
-              <option value="9:00 AM">9:00 AM — morning coffee</option>
-              <option value="10:00 AM">10:00 AM — sunny walk & breakfast</option>
-              <option value="11:00 AM">11:00 AM — late morning brunch</option>
-            </optgroup>
+          <label>What Time? 🙃</label>
+          <div class="custom-trigger-box" id="time-trigger" onclick="toggleTimeDropdown()">
+            <span id="time-display-text">Select a time...</span>
+            <span style="font-size: 0.8rem;">▼</span>
+          </div>
 
-            <optgroup label="☀️ Afternoon">
-              <option value="12:00 PM">12:00 PM — lunch date</option>
-              <option value="1:00 PM">1:00 PM — afternoon hangout</option>
-              <option value="2:00 PM">2:00 PM — post-lunch dessert</option>
-              <option value="3:00 PM">3:00 PM — coffee run & treats</option>
-              <option value="4:00 PM">4:00 PM — golden hour stroll</option>
-              <option value="5:00 PM">5:00 PM — early sunset vibe</option>
-            </optgroup>
+          <div class="time-widget" id="time-widget">
+            <div class="time-category">☕ Morning & Brunch</div>
+            <div class="time-option" onclick="selectCustomTime('9:00 AM', '9:00 AM — morning coffee')">9:00 AM — morning coffee</div>
+            <div class="time-option" onclick="selectCustomTime('10:00 AM', '10:00 AM — sunny walk & breakfast')">10:00 AM — sunny walk & breakfast</div>
+            <div class="time-option" onclick="selectCustomTime('11:00 AM', '11:00 AM — late morning brunch')">11:00 AM — late morning brunch</div>
 
-            <optgroup label="🌙 Evening & Dinner">
-              <option value="6:00 PM">6:00 PM — early dinner vibes</option>
-              <option value="6:30 PM">6:30 PM — right on time</option>
-              <option value="7:00 PM">7:00 PM — making me hungry already</option>
-              <option value="7:30 PM">7:30 PM — peak dinner hour</option>
-              <option value="8:00 PM">8:00 PM — evening hangout</option>
-              <option value="8:30 PM">8:30 PM — drinks & bites</option>
-            </optgroup>
+            <div class="time-category">☀️ Afternoon</div>
+            <div class="time-option" onclick="selectCustomTime('12:00 PM', '12:00 PM — lunch date')">12:00 PM — lunch date</div>
+            <div class="time-option" onclick="selectCustomTime('1:00 PM', '1:00 PM — afternoon hangout')">1:00 PM — afternoon hangout</div>
+            <div class="time-option" onclick="selectCustomTime('2:00 PM', '2:00 PM — post-lunch dessert')">2:00 PM — post-lunch dessert</div>
+            <div class="time-option" onclick="selectCustomTime('3:00 PM', '3:00 PM — coffee run & treats')">3:00 PM — coffee run & treats</div>
+            <div class="time-option" onclick="selectCustomTime('4:00 PM', '4:00 PM — golden hour stroll')">4:00 PM — golden hour stroll</div>
+            <div class="time-option" onclick="selectCustomTime('5:00 PM', '5:00 PM — early sunset vibe')">5:00 PM — early sunset vibe</div>
 
-            <optgroup label="✨ Late Night">
-              <option value="9:00 PM">9:00 PM — late night dessert run</option>
-              <option value="9:30 PM">9:30 PM — night drive vibe</option>
-              <option value="10:00 PM">10:00 PM — late night adventure</option>
-              <option value="11:00 PM">11:00 PM — night owls only</option>
-            </optgroup>
+            <div class="time-category">🌙 Evening & Dinner</div>
+            <div class="time-option" onclick="selectCustomTime('6:00 PM', '6:00 PM — early dinner vibes')">6:00 PM — early dinner vibes</div>
+            <div class="time-option" onclick="selectCustomTime('6:30 PM', '6:30 PM — right on time')">6:30 PM — right on time</div>
+            <div class="time-option" onclick="selectCustomTime('7:00 PM', '7:00 PM — making me hungry already')">7:00 PM — making me hungry already</div>
+            <div class="time-option" onclick="selectCustomTime('7:30 PM', '7:30 PM — peak dinner hour')">7:30 PM — peak dinner hour</div>
+            <div class="time-option" onclick="selectCustomTime('8:00 PM', '8:00 PM — evening hangout')">8:00 PM — evening hangout</div>
+            <div class="time-option" onclick="selectCustomTime('8:30 PM', '8:30 PM — drinks & bites')">8:30 PM — drinks & bites</div>
 
-            <optgroup label="🎁 Other">
-              <option value="Surprise me">Surprise me!</option>
-            </optgroup>
-          </select>
+            <div class="time-category">✨ Late Night</div>
+            <div class="time-option" onclick="selectCustomTime('9:00 PM', '9:00 PM — late night dessert run')">9:00 PM — late night dessert run</div>
+            <div class="time-option" onclick="selectCustomTime('9:30 PM', '9:30 PM — night drive vibe')">9:30 PM — night drive vibe</div>
+            <div class="time-option" onclick="selectCustomTime('10:00 PM', '10:00 PM — late night adventure')">10:00 PM — late night adventure</div>
+            <div class="time-option" onclick="selectCustomTime('11:00 PM', '11:00 PM — night owls only')">11:00 PM — night owls only</div>
+
+            <div class="time-category">🎁 Other</div>
+            <div class="time-option" onclick="selectCustomTime('Surprise me', 'Surprise me!')">Surprise me!</div>
+          </div>
         </div>
       </div>
 
       <button class="btn-primary" onclick="validateStep3()">okay next →</button>
     </div>
 
-    <!-- ================= SCREEN 4: FOOD PREFERENCES ================= -->
+    <!-- SCREEN 4 -->
     <div class="card" id="screen-4">
       <div class="steps">
         <span>💖</span><span class="dot"></span>
@@ -657,7 +697,7 @@
       <button class="btn-primary" onclick="finishDatePlan()">this one! →</button>
     </div>
 
-    <!-- ================= SCREEN 5: FINAL SUMMARY ================= -->
+    <!-- SCREEN 5 -->
     <div class="card" id="screen-5">
       <div class="polaroid-badge">💖</div>
       <h2>It's a date! 💌</h2>
@@ -695,7 +735,7 @@
       foods: []
     };
 
-    // ================= CUSTOM STYLED CALENDAR LOGIC =================
+    // ================= CUSTOM STYLED CALENDAR =================
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -711,6 +751,11 @@
     function toggleCalendar() {
       const widget = document.getElementById('calendar-widget');
       const trigger = document.getElementById('date-trigger');
+      
+      // Close time widget if open
+      document.getElementById('time-widget').classList.remove('open');
+      document.getElementById('time-trigger').classList.remove('active');
+
       widget.classList.toggle('open');
       trigger.classList.toggle('active');
       if (widget.classList.contains('open')) {
@@ -791,7 +836,37 @@
       hideSoftAlert();
     }
 
-    // ================= SOFT ALERT NOTIFICATION =================
+    // ================= CUSTOM STYLED TIME PICKER =================
+    function toggleTimeDropdown() {
+      const widget = document.getElementById('time-widget');
+      const trigger = document.getElementById('time-trigger');
+
+      // Close calendar widget if open
+      document.getElementById('calendar-widget').classList.remove('open');
+      document.getElementById('date-trigger').classList.remove('active');
+
+      widget.classList.toggle('open');
+      trigger.classList.toggle('active');
+    }
+
+    function selectCustomTime(val, label) {
+      state.time = val;
+
+      const trigger = document.getElementById('time-trigger');
+      const text = document.getElementById('time-display-text');
+      text.innerText = label;
+      trigger.classList.add('has-value');
+
+      document.querySelectorAll('.time-option').forEach(el => {
+        el.classList.toggle('selected', el.innerText === label);
+      });
+
+      document.getElementById('time-widget').classList.remove('open');
+      trigger.classList.remove('active');
+      hideSoftAlert();
+    }
+
+    // ================= SOFT ALERTS =================
     function showSoftAlert(message) {
       const alertBox = document.getElementById('soft-alert');
       const alertMsg = document.getElementById('soft-alert-msg');
@@ -810,7 +885,7 @@
       alertBox.classList.remove('visible');
     }
 
-    // ================= RUNAWAY "NO" & SLIDING "YES" LOGIC =================
+    // ================= RUNAWAY "NO" LOGIC =================
     const noBtn = document.getElementById('no-btn');
     const yesBtn = document.getElementById('yes-btn');
     let hasEscapedOnce = false;
@@ -858,9 +933,7 @@
     }
 
     function validateStep3() {
-      const selectedTime = document.getElementById('time-select').value;
-
-      if (!state.date && !selectedTime) {
+      if (!state.date && !state.time) {
         showSoftAlert('Please pick both a date and a time! 💕');
         return;
       }
@@ -868,12 +941,11 @@
         showSoftAlert('Please pick a date for our date! ✨');
         return;
       }
-      if (!selectedTime) {
+      if (!state.time) {
         showSoftAlert('Please select what time works for you! 🙃');
         return;
       }
 
-      state.time = selectedTime;
       hideSoftAlert();
       nextScreen(4);
     }
@@ -887,7 +959,6 @@
       }
     }
 
-    // ================= FORMAT & FINISH =================
     function finishDatePlan() {
       if (state.foods.length === 0) {
         state.foods.push('Whatever you want');
@@ -896,7 +967,6 @@
       const options = { weekday: 'long', month: 'long', day: 'numeric' };
       const formattedDate = state.date.toLocaleDateString('en-US', options);
 
-      // Handle specific time vs "Surprise me" naturally
       const isSurprise = state.time === 'Surprise me';
       
       const whenText = isSurprise 
@@ -907,7 +977,6 @@
         ? `glad you didn't say no. be ready whenever, the time is a surprise 🚗✨` 
         : `glad you didn't say no. be ready by ${state.time}, i'm coming to get you 🚗`;
 
-      // Populate Screen 5 Elements
       document.getElementById('summary-date-time').innerText = whenText;
       document.getElementById('summary-food').innerText = state.foods.join(', ');
       document.getElementById('pickup-line').innerText = pickupText;
@@ -915,7 +984,6 @@
       nextScreen(5);
     }
 
-    // ================= CLIPBOARD COPY ACTION =================
     function copyPlan() {
       const planText = `It's a date! 💌\n🗓️ When: ${document.getElementById('summary-date-time').innerText}\n🍽️ Food: ${state.foods.join(', ')}\nReady when you are! 🚗✨`;
 
